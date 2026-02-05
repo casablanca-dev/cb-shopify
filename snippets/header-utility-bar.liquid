@@ -1,0 +1,311 @@
+{%- liquid
+  assign block_settings = section.settings
+-%}
+
+<style>
+  .header-utility-bar { border-bottom: var(--style-border-width, 1px) solid var(--color-border, #e5e5e5); background-color: var(--color-background, #fff); width: 100%; }
+  .header-utility-bar__inner { display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; min-height: 40px; padding: 0.5rem 0; }
+  .header-utility-bar__left, .header-utility-bar__right { display: flex !important; align-items: center !important; gap: 1rem; }
+  .header-utility-bar__right { margin-left: auto; }
+  .header-utility-bar__item { display: flex !important; align-items: center !important; }
+  .header-utility-bar__toggle-wrapper { display: flex !important; align-items: center !important; gap: 0.5rem; cursor: pointer; }
+  .header-utility-bar__toggle-label { font-size: var(--font-size--sm, 0.875rem); color: var(--color-foreground, #333); }
+  .header-utility-bar__toggle { position: absolute; opacity: 0; width: 0; height: 0; }
+  .header-utility-bar__toggle-slider { position: relative; display: inline-block; width: 44px; height: 24px; background-color: var(--color-border, #e5e5e5); border-radius: 24px; transition: background-color 0.2s ease; }
+  .header-utility-bar__toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background-color: var(--color-background, #fff); border-radius: 50%; transition: transform 0.2s ease; }
+  .header-utility-bar__toggle:checked + .header-utility-bar__toggle-slider { background-color: var(--color-primary, #000); }
+  .header-utility-bar__toggle:checked + .header-utility-bar__toggle-slider::before { transform: translateX(20px); }
+  .header-utility-bar__link { display: flex !important; align-items: center; gap: 0.25rem; font-size: var(--font-size--sm, 0.875rem); color: var(--color-foreground, #333); text-decoration: none; }
+  .header-utility-bar__link:hover { color: var(--color-primary, #000); text-decoration: underline; }
+  .header-utility-bar__link .icon-caret { width: 1rem; height: 1rem; transform: rotate(-90deg); }
+  .header-utility-bar__social-nav { display: flex !important; align-items: center; gap: 0.5rem; }
+  .header-utility-bar__social-link { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background-color: #c4a6a3; color: #fff; }
+  .header-utility-bar__social-link:hover { background-color: #b89591; opacity: 0.95; }
+  .header-utility-bar__social-icon { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+  .header-utility-bar__social-icon svg { width: 16px; height: 16px; fill: currentColor; }
+  @media (max-width: 749px) { .header-utility-bar__inner { flex-wrap: wrap; padding: 0.5rem 1rem; } .header-utility-bar__left, .header-utility-bar__right { flex-wrap: wrap; gap: 0.5rem; } }
+</style>
+
+<div
+  class="header-utility-bar spacing-style"
+  style="{% render 'spacing-style', settings: block_settings %}"
+>
+  <div class="header-utility-bar__inner" style="display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 40px;">
+    <div class="header-utility-bar__left" style="display: flex;"></div>
+
+    <div class="header-utility-bar__right" style="display: flex; align-items: center; gap: 1rem; margin-left: auto;">
+      {% if block_settings.show_prices_toggle %}
+        <div class="header-utility-bar__item">
+          <label class="header-utility-bar__toggle-wrapper">
+            <span class="header-utility-bar__toggle-label">{{ block_settings.prices_label | default: 'Show Prices' }}</span>
+            <input
+              type="checkbox"
+              class="header-utility-bar__toggle"
+              id="show-prices-toggle-{{ section.id }}"
+              data-show-prices-toggle
+              aria-label="{{ block_settings.prices_label | default: 'Show Prices' }}"
+              {% if block_settings.prices_default %}checked{% endif %}
+            >
+            <span class="header-utility-bar__toggle-slider"></span>
+          </label>
+        </div>
+      {% endif %}
+
+      {% if block_settings.show_ship_dates %}
+        <div class="header-utility-bar__item">
+          <a
+            href="{{ block_settings.ship_dates_url | default: '#' }}"
+            class="header-utility-bar__link"
+          >
+            {{ block_settings.ship_dates_label | default: 'Ship Dates' }}
+            <span class="svg-wrapper icon-caret">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </a>
+        </div>
+      {% endif %}
+
+      {% if block_settings.show_contact %}
+        <div class="header-utility-bar__item">
+          <a
+            href="{{ block_settings.contact_url | default: routes.root_url }}"
+            class="header-utility-bar__link"
+          >
+            {{ block_settings.contact_label | default: 'Contact Us' }}
+          </a>
+        </div>
+      {% endif %}
+
+      {% if block_settings.show_cart %}
+        <div class="header-utility-bar__item">
+          <a
+            href="{{ routes.cart_url }}"
+            class="header-utility-bar__link header-utility-bar__link--cart"
+          >
+            {{ block_settings.cart_label | default: 'Cart' }}
+            {% if cart.item_count > 0 %}
+              <span class="header-utility-bar__cart-count">({{ cart.item_count }})</span>
+            {% endif %}
+          </a>
+        </div>
+      {% endif %}
+
+      {% if block_settings.show_account and shop.customer_accounts_enabled %}
+        <div class="header-utility-bar__item">
+          <a
+            href="{{ routes.account_url }}"
+            class="header-utility-bar__link"
+          >
+            {{ block_settings.account_label | default: 'My Account' }}
+          </a>
+        </div>
+      {% endif %}
+
+      {% if block_settings.show_social_icons %}
+        <div class="header-utility-bar__item header-utility-bar__social">
+          <nav class="header-utility-bar__social-nav" aria-label="Social media">
+            {% if block_settings.social_facebook_url != blank %}
+              <a
+                href="{{ block_settings.social_facebook_url }}"
+                class="header-utility-bar__social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
+                <span class="header-utility-bar__social-icon">
+                  <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">{% render 'icon', icon: 'facebook' %}</svg>
+                </span>
+              </a>
+            {% endif %}
+            {% if block_settings.social_instagram_url != blank %}
+              <a
+                href="{{ block_settings.social_instagram_url }}"
+                class="header-utility-bar__social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <span class="header-utility-bar__social-icon">
+                  <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">{% render 'icon', icon: 'instagram' %}</svg>
+                </span>
+              </a>
+            {% endif %}
+            {% if block_settings.social_pinterest_url != blank %}
+              <a
+                href="{{ block_settings.social_pinterest_url }}"
+                class="header-utility-bar__social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Pinterest"
+              >
+                <span class="header-utility-bar__social-icon">
+                  <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">{% render 'icon', icon: 'pinterest' %}</svg>
+                </span>
+              </a>
+            {% endif %}
+          </nav>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .header-utility-bar {
+    border-bottom: var(--style-border-width) solid var(--color-border);
+    background-color: var(--color-background);
+  }
+
+  .header-utility-bar {
+    width: 100%;
+  }
+
+  .header-utility-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 40px;
+    padding: var(--padding-xs) 0;
+  }
+
+  .header-utility-bar__left,
+  .header-utility-bar__right {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-md);
+  }
+
+  .header-utility-bar__item {
+    display: flex;
+    align-items: center;
+  }
+
+  .header-utility-bar__toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-xs);
+    cursor: pointer;
+  }
+
+  .header-utility-bar__toggle-label {
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
+  }
+
+  .header-utility-bar__toggle {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .header-utility-bar__toggle-slider {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    background-color: var(--color-border);
+    border-radius: 24px;
+    transition: background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .header-utility-bar__toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    top: 3px;
+    background-color: var(--color-background);
+    border-radius: 50%;
+    transition: transform var(--animation-speed) var(--animation-easing);
+  }
+
+  .header-utility-bar__toggle:checked + .header-utility-bar__toggle-slider {
+    background-color: var(--color-primary);
+  }
+
+  .header-utility-bar__toggle:checked + .header-utility-bar__toggle-slider::before {
+    transform: translateX(20px);
+  }
+
+  .header-utility-bar__link {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-2xs);
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
+    text-decoration: none;
+    transition: color var(--animation-speed) var(--animation-easing);
+  }
+
+  .header-utility-bar__link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .header-utility-bar__link .icon-caret {
+    width: var(--icon-size-xs);
+    height: var(--icon-size-xs);
+    color: var(--color-foreground);
+    transform: rotate(-90deg);
+  }
+
+  .header-utility-bar__cart-count {
+    font-weight: var(--font-body--weight);
+  }
+
+  .header-utility-bar__social-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-xs);
+  }
+
+  .header-utility-bar__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #c4a6a3;
+    color: #fff;
+    transition: background-color var(--animation-speed) var(--animation-easing),
+      opacity var(--animation-speed) var(--animation-easing);
+  }
+
+  .header-utility-bar__social-link:hover {
+    background-color: #b89591;
+    color: #fff;
+    opacity: 0.95;
+  }
+
+  .header-utility-bar__social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .header-utility-bar__social-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  @media screen and (max-width: 749px) {
+    .header-utility-bar__inner {
+      flex-wrap: wrap;
+      gap: var(--padding-xs);
+      padding: var(--padding-xs) var(--padding-md);
+    }
+
+    .header-utility-bar__left,
+    .header-utility-bar__right {
+      flex-wrap: wrap;
+      gap: var(--padding-xs);
+    }
+  }
+{% endstylesheet %}

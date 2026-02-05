@@ -1,0 +1,399 @@
+
+{%- liquid
+  assign block_settings = block.settings
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+
+  assign product_form_id = 'BuyButtons-ProductForm-' | append: section.id
+-%}
+
+<div
+  class="product-options-b2b spacing-style"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} Petite Sizing and Order Type Side by Side {%- endcomment -%}
+  {% if block_settings.show_petite_sizing or block_settings.show_order_type %}
+    <div class="product-options-b2b__fields-wrapper">
+      {% if block_settings.show_petite_sizing %}
+        <div class="product-options-b2b__field product-options-b2b__field--inline product-options-b2b__field--boxed">
+          <label class="product-options-b2b__label">{{ block_settings.petite_label | default: 'Petite Sizing' }}</label>
+          <label class="product-options-b2b__toggle-wrapper product-options-b2b__toggle-wrapper--vertical">
+            <input
+              type="checkbox"
+              name="properties[Petite Sizing]"
+              value="Yes"
+              form="{{ product_form_id }}"
+              class="product-options-b2b__toggle"
+              id="petite-sizing-{{ section.id }}"
+              {% if block_settings.petite_default %}checked{% endif %}
+            >
+            <span class="product-options-b2b__toggle-slider"></span>
+          </label>
+        </div>
+      {% endif %}
+
+      {%- comment -%} Order Type Radio Buttons {%- endcomment -%}
+      {% if block_settings.show_order_type %}
+        <div class="product-options-b2b__field product-options-b2b__field--inline product-options-b2b__field--boxed">
+          <fieldset class="product-options-b2b__radio-group">
+            <legend class="product-options-b2b__label">{{ block_settings.order_type_label | default: 'Order Type' }}</legend>
+            <div class="product-options-b2b__radio-options">
+              <label class="product-options-b2b__radio-label">
+                <input
+                  type="radio"
+                  name="properties[Order Type]"
+                  value="Special"
+                  form="{{ product_form_id }}"
+                  class="product-options-b2b__radio"
+                  {% if block_settings.order_type_default == 'special' %}checked{% endif %}
+                >
+                <span>{{ block_settings.special_label | default: 'Special' }}</span>
+              </label>
+              <label class="product-options-b2b__radio-label">
+                <input
+                  type="radio"
+                  name="properties[Order Type]"
+                  value="Stock"
+                  form="{{ product_form_id }}"
+                  class="product-options-b2b__radio"
+                  {% if block_settings.order_type_default == 'stock' %}checked{% endif %}
+                >
+                <span>{{ block_settings.stock_label | default: 'Stock' }}</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .product-options-b2b {
+    width: 100%;
+  }
+
+  .product-options-b2b__fields-wrapper {
+    display: flex;
+    gap: var(--padding-lg);
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  .product-options-b2b__field {
+    margin-block-end: var(--padding-lg);
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .product-options-b2b__field:last-child {
+    margin-block-end: 0;
+  }
+
+  .product-options-b2b__field--inline {
+    flex: 0 1 auto;
+    margin-block-end: 0;
+  }
+
+  .product-options-b2b__field--boxed {
+    border: var(--style-border-width) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    padding: var(--padding-md);
+    background-color: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 120px;
+  }
+
+  .product-options-b2b__toggle-wrapper--vertical {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--padding-xs);
+    margin-block-start: var(--padding-xs);
+    width: 100%;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-options-b2b__fields-wrapper {
+      flex-direction: column;
+    }
+
+    .product-options-b2b__field {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+
+  .product-options-b2b__label {
+    display: block;
+    font-size: var(--font-size--sm);
+    font-weight: var(--font-body--weight);
+    color: var(--color-foreground);
+    margin-block-end: var(--padding-xs);
+  }
+
+  .product-options-b2b__select-wrapper {
+    display: flex;
+    position: relative;
+    border: var(--style-border-width-inputs) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    align-items: center;
+    overflow: clip;
+    background-color: var(--color-input-background);
+  }
+
+  .product-options-b2b__select-wrapper:hover {
+    border-color: var(--color-variant-hover-border);
+  }
+
+  .product-options-b2b__select {
+    padding-block: var(--padding-md);
+    padding-inline: var(--padding-lg) calc(var(--padding-lg) + var(--icon-size-2xs));
+    appearance: none;
+    border: 0;
+    width: 100%;
+    margin: 0;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--color-input-text);
+    font-size: var(--font-size--sm);
+  }
+
+  .product-options-b2b__select:focus-visible {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .product-options-b2b__select-wrapper .icon {
+    position: absolute;
+    right: var(--padding-md);
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--icon-size-2xs);
+    height: var(--icon-size-2xs);
+    pointer-events: none;
+    color: var(--color-foreground);
+  }
+
+  .product-options-b2b__toggle-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+  }
+
+  .product-options-b2b__toggle {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .product-options-b2b__toggle-slider {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    background-color: var(--color-border);
+    border-radius: 24px;
+    transition: background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .product-options-b2b__toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    top: 3px;
+    background-color: var(--color-background);
+    border-radius: 50%;
+    transition: transform var(--animation-speed) var(--animation-easing);
+  }
+
+  .product-options-b2b__toggle:checked + .product-options-b2b__toggle-slider {
+    background-color: var(--color-primary);
+  }
+
+  .product-options-b2b__toggle:checked + .product-options-b2b__toggle-slider::before {
+    transform: translateX(20px);
+  }
+
+  .product-options-b2b__radio-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .product-options-b2b__radio-group legend {
+    padding: 0;
+    margin-block-end: var(--padding-xs);
+  }
+
+  .product-options-b2b__radio-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-sm);
+  }
+
+  .product-options-b2b__radio-label {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-xs);
+    cursor: pointer;
+    font-size: var(--font-size--sm);
+  }
+
+  .product-options-b2b__radio {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product Options B2B",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Display Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color",
+      "label": "Show Color",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "color_label",
+      "label": "Color Label",
+      "default": "Color",
+      "visible_if": "{{ block.settings.show_color }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_petite_sizing",
+      "label": "Show Petite Sizing",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "petite_label",
+      "label": "Petite Label",
+      "default": "Petite Sizing",
+      "visible_if": "{{ block.settings.show_petite_sizing }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "petite_default",
+      "label": "Petite Default (ON)",
+      "default": true,
+      "visible_if": "{{ block.settings.show_petite_sizing }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_order_type",
+      "label": "Show Order Type",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "order_type_label",
+      "label": "Order Type Label",
+      "default": "Order Type",
+      "visible_if": "{{ block.settings.show_order_type }}"
+    },
+    {
+      "type": "select",
+      "id": "order_type_default",
+      "label": "Default Order Type",
+      "options": [
+        {
+          "value": "special",
+          "label": "Special"
+        },
+        {
+          "value": "stock",
+          "label": "Stock"
+        }
+      ],
+      "default": "special",
+      "visible_if": "{{ block.settings.show_order_type }}"
+    },
+    {
+      "type": "text",
+      "id": "special_label",
+      "label": "Special Label",
+      "default": "Special",
+      "visible_if": "{{ block.settings.show_order_type }}"
+    },
+    {
+      "type": "text",
+      "id": "stock_label",
+      "label": "Stock Label",
+      "default": "Stock",
+      "visible_if": "{{ block.settings.show_order_type }}"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Options B2B",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

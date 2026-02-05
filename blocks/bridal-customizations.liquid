@@ -1,0 +1,985 @@
+
+{%- liquid
+  assign block_settings = block.settings
+  assign product_id = closest.product.id
+  assign product_form_id = 'BuyButtons-ProductForm-' | append: section.id
+-%}
+
+<script
+  src="{{ 'accordion-custom.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+<div
+  class="bridal-customizations bridal-customizations--boxed spacing-style"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  {% if block_settings.heading != blank %}
+    <div class="bridal-customizations__header">
+      <h3 class="bridal-customizations__heading">
+        {{ block_settings.heading | escape }}
+      </h3>
+      <label class="bridal-customizations__toggle-wrapper">
+        <input
+          type="checkbox"
+          class="bridal-customizations__toggle"
+          id="customizations-toggle-{{ section.id }}"
+          {% if block_settings.enabled_by_default %}checked{% endif %}
+        >
+        <span class="bridal-customizations__toggle-slider"></span>
+      </label>
+    </div>
+  {% endif %}
+
+  {% if block_settings.description != blank %}
+    <p class="bridal-customizations__description">
+      {{ block_settings.description | escape }}
+    </p>
+  {% endif %}
+
+  <div class="bridal-customizations__accordions" id="customizations-accordions-{{ section.id }}">
+    {%- comment -%} Neckline Accordion {%- endcomment -%}
+    {% if block_settings.show_neckline %}
+      {%- assign neckline_options = block_settings.neckline_options | newline_to_br | split: '<br />' -%}
+      {%- assign neckline_count = 0 -%}
+      {%- for option_line in neckline_options -%}
+        {%- if option_line != blank -%}
+          {%- assign neckline_count = neckline_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <accordion-custom class="bridal-customizations__accordion-item">
+        <details class="bridal-customizations__details">
+          <summary class="bridal-customizations__summary">
+            <span class="bridal-customizations__summary-text">
+              {{ block_settings.neckline_label | default: 'Neckline' }}
+              <span class="bridal-customizations__count">{{ neckline_count }}</span>
+            </span>
+            <span class="svg-wrapper icon-caret icon-animated">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </summary>
+          <div class="bridal-customizations__options">
+            {%- for option_line in neckline_options -%}
+              {%- if option_line != blank -%}
+                {%- assign option_parts = option_line | strip | split: '|' -%}
+                {%- assign option_name = option_parts[0] | strip -%}
+                {%- assign option_description = option_parts[1] | default: '' | strip -%}
+                {%- assign option_popular = option_parts[2] | default: 'false' | strip -%}
+                {%- if option_name != blank -%}
+                  <label class="bridal-customizations__option">
+                    <input
+                      type="radio"
+                      name="properties[Neckline]"
+                      value="{{ option_name | escape }}"
+                      form="{{ product_form_id }}"
+                      class="bridal-customizations__radio"
+                    >
+                    <div class="bridal-customizations__option-content">
+                      <div class="bridal-customizations__option-header">
+                        <span class="bridal-customizations__option-name">{{ option_name | escape }}</span>
+                        {%- if option_popular == 'true' or option_popular == 'True' -%}
+                          <span class="bridal-customizations__popular-tag">Popular</span>
+                        {%- endif -%}
+                      </div>
+                      {%- if option_description != blank -%}
+                        <p class="bridal-customizations__option-description">{{ option_description | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  </label>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </details>
+      </accordion-custom>
+    {% endif %}
+
+    {%- comment -%} Sleeves Accordion {%- endcomment -%}
+    {% if block_settings.show_sleeves %}
+      {%- assign sleeves_options = block_settings.sleeves_options | newline_to_br | split: '<br />' -%}
+      {%- assign sleeves_count = 0 -%}
+      {%- for option_line in sleeves_options -%}
+        {%- if option_line != blank -%}
+          {%- assign sleeves_count = sleeves_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <accordion-custom class="bridal-customizations__accordion-item">
+        <details class="bridal-customizations__details">
+          <summary class="bridal-customizations__summary">
+            <span class="bridal-customizations__summary-text">
+              {{ block_settings.sleeves_label | default: 'Sleeves' }}
+              <span class="bridal-customizations__count">{{ sleeves_count }}</span>
+            </span>
+            <span class="svg-wrapper icon-caret icon-animated">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </summary>
+          <div class="bridal-customizations__options">
+            {%- for option_line in sleeves_options -%}
+              {%- if option_line != blank -%}
+                {%- assign option_parts = option_line | strip | split: '|' -%}
+                {%- assign option_name = option_parts[0] | strip -%}
+                {%- assign option_description = option_parts[1] | default: '' | strip -%}
+                {%- assign option_popular = option_parts[2] | default: 'false' | strip -%}
+                {%- if option_name != blank -%}
+                  <label class="bridal-customizations__option">
+                    <input
+                      type="radio"
+                      name="properties[Sleeves]"
+                      value="{{ option_name | escape }}"
+                      form="{{ product_form_id }}"
+                      class="bridal-customizations__radio"
+                    >
+                    <div class="bridal-customizations__option-content">
+                      <div class="bridal-customizations__option-header">
+                        <span class="bridal-customizations__option-name">{{ option_name | escape }}</span>
+                        {%- if option_popular == 'true' or option_popular == 'True' -%}
+                          <span class="bridal-customizations__popular-tag">Popular</span>
+                        {%- endif -%}
+                      </div>
+                      {%- if option_description != blank -%}
+                        <p class="bridal-customizations__option-description">{{ option_description | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  </label>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </details>
+      </accordion-custom>
+    {% endif %}
+
+    {%- comment -%} Silhouette Accordion {%- endcomment -%}
+    {% if block_settings.show_silhouette %}
+      {%- assign silhouette_options = block_settings.silhouette_options | newline_to_br | split: '<br />' -%}
+      {%- assign silhouette_count = 0 -%}
+      {%- for option_line in silhouette_options -%}
+        {%- if option_line != blank -%}
+          {%- assign silhouette_count = silhouette_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <accordion-custom class="bridal-customizations__accordion-item">
+        <details class="bridal-customizations__details">
+          <summary class="bridal-customizations__summary">
+            <span class="bridal-customizations__summary-text">
+              {{ block_settings.silhouette_label | default: 'Silhouette' }}
+              <span class="bridal-customizations__count">{{ silhouette_count }}</span>
+            </span>
+            <span class="svg-wrapper icon-caret icon-animated">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </summary>
+          <div class="bridal-customizations__options">
+            {%- for option_line in silhouette_options -%}
+              {%- if option_line != blank -%}
+                {%- assign option_parts = option_line | strip | split: '|' -%}
+                {%- assign option_name = option_parts[0] | strip -%}
+                {%- assign option_description = option_parts[1] | default: '' | strip -%}
+                {%- assign option_popular = option_parts[2] | default: 'false' | strip -%}
+                {%- if option_name != blank -%}
+                  <label class="bridal-customizations__option">
+                    <input
+                      type="radio"
+                      name="properties[Silhouette]"
+                      value="{{ option_name | escape }}"
+                      form="{{ product_form_id }}"
+                      class="bridal-customizations__radio"
+                    >
+                    <div class="bridal-customizations__option-content">
+                      <div class="bridal-customizations__option-header">
+                        <span class="bridal-customizations__option-name">{{ option_name | escape }}</span>
+                        {%- if option_popular == 'true' or option_popular == 'True' -%}
+                          <span class="bridal-customizations__popular-tag">Popular</span>
+                        {%- endif -%}
+                      </div>
+                      {%- if option_description != blank -%}
+                        <p class="bridal-customizations__option-description">{{ option_description | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  </label>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </details>
+      </accordion-custom>
+    {% endif %}
+
+    {%- comment -%} Train Accordion {%- endcomment -%}
+    {% if block_settings.show_train %}
+      {%- assign train_options = block_settings.train_options | newline_to_br | split: '<br />' -%}
+      {%- assign train_count = 0 -%}
+      {%- for option_line in train_options -%}
+        {%- if option_line != blank -%}
+          {%- assign train_count = train_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <accordion-custom class="bridal-customizations__accordion-item">
+        <details class="bridal-customizations__details" {% if block_settings.train_open_by_default %}open{% endif %}>
+          <summary class="bridal-customizations__summary">
+            <span class="bridal-customizations__summary-text">
+              {{ block_settings.train_label | default: 'Train' }}
+              <span class="bridal-customizations__count">{{ train_count }}</span>
+            </span>
+            <span class="svg-wrapper icon-caret icon-animated">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </summary>
+          <div class="bridal-customizations__options">
+            {%- for option_line in train_options -%}
+              {%- if option_line != blank -%}
+                {%- assign option_parts = option_line | strip | split: '|' -%}
+                {%- assign option_name = option_parts[0] | strip -%}
+                {%- assign option_description = option_parts[1] | default: '' | strip -%}
+                {%- assign option_popular = option_parts[2] | default: 'false' | strip -%}
+                {%- if option_name != blank -%}
+                  <label class="bridal-customizations__option">
+                    <input
+                      type="radio"
+                      name="properties[Train]"
+                      value="{{ option_name | escape }}"
+                      form="{{ product_form_id }}"
+                      class="bridal-customizations__radio"
+                    >
+                    <div class="bridal-customizations__option-content">
+                      <div class="bridal-customizations__option-header">
+                        <span class="bridal-customizations__option-name">{{ option_name | escape }}</span>
+                        {%- if option_popular == 'true' or option_popular == 'True' -%}
+                          <span class="bridal-customizations__popular-tag">Popular</span>
+                        {%- endif -%}
+                      </div>
+                      {%- if option_description != blank -%}
+                        <p class="bridal-customizations__option-description">{{ option_description | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  </label>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </details>
+      </accordion-custom>
+    {% endif %}
+
+    {%- comment -%} Details Accordion {%- endcomment -%}
+    {% if block_settings.show_details %}
+      {%- assign details_options = block_settings.details_options | newline_to_br | split: '<br />' -%}
+      {%- assign details_count = 0 -%}
+      {%- for option_line in details_options -%}
+        {%- if option_line != blank -%}
+          {%- assign details_count = details_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <accordion-custom class="bridal-customizations__accordion-item">
+        <details class="bridal-customizations__details">
+          <summary class="bridal-customizations__summary">
+            <span class="bridal-customizations__summary-text">
+              {{ block_settings.details_label | default: 'Details' }}
+              <span class="bridal-customizations__count">{{ details_count }}</span>
+            </span>
+            <span class="svg-wrapper icon-caret icon-animated">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </summary>
+          <div class="bridal-customizations__options">
+            {%- for option_line in details_options -%}
+              {%- if option_line != blank -%}
+                {%- assign option_parts = option_line | strip | split: '|' -%}
+                {%- assign option_name = option_parts[0] | strip -%}
+                {%- assign option_description = option_parts[1] | default: '' | strip -%}
+                {%- assign option_popular = option_parts[2] | default: 'false' | strip -%}
+                {%- if option_name != blank -%}
+                  <label class="bridal-customizations__option">
+                    <input
+                      type="radio"
+                      name="properties[Details]"
+                      value="{{ option_name | escape }}"
+                      form="{{ product_form_id }}"
+                      class="bridal-customizations__radio"
+                    >
+                    <div class="bridal-customizations__option-content">
+                      <div class="bridal-customizations__option-header">
+                        <span class="bridal-customizations__option-name">{{ option_name | escape }}</span>
+                        {%- if option_popular == 'true' or option_popular == 'True' -%}
+                          <span class="bridal-customizations__popular-tag">Popular</span>
+                        {%- endif -%}
+                      </div>
+                      {%- if option_description != blank -%}
+                        <p class="bridal-customizations__option-description">{{ option_description | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  </label>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </details>
+      </accordion-custom>
+    {% endif %}
+
+    {%- comment -%} Fabric Accordion {%- endcomment -%}
+    {% if block_settings.show_fabric %}
+      {%- assign fabric_options = block_settings.fabric_options | newline_to_br | split: '<br />' -%}
+      {%- assign fabric_count = 0 -%}
+      {%- for option_line in fabric_options -%}
+        {%- if option_line != blank -%}
+          {%- assign fabric_count = fabric_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <accordion-custom class="bridal-customizations__accordion-item">
+        <details class="bridal-customizations__details">
+          <summary class="bridal-customizations__summary">
+            <span class="bridal-customizations__summary-text">
+              {{ block_settings.fabric_label | default: 'Fabric' }}
+              <span class="bridal-customizations__count">{{ fabric_count }}</span>
+            </span>
+            <span class="svg-wrapper icon-caret icon-animated">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </summary>
+          <div class="bridal-customizations__options">
+            {%- for option_line in fabric_options -%}
+              {%- if option_line != blank -%}
+                {%- assign option_parts = option_line | strip | split: '|' -%}
+                {%- assign option_name = option_parts[0] | strip -%}
+                {%- assign option_description = option_parts[1] | default: '' | strip -%}
+                {%- assign option_popular = option_parts[2] | default: 'false' | strip -%}
+                {%- if option_name != blank -%}
+                  <label class="bridal-customizations__option">
+                    <input
+                      type="radio"
+                      name="properties[Fabric]"
+                      value="{{ option_name | escape }}"
+                      form="{{ product_form_id }}"
+                      class="bridal-customizations__radio"
+                    >
+                    <div class="bridal-customizations__option-content">
+                      <div class="bridal-customizations__option-header">
+                        <span class="bridal-customizations__option-name">{{ option_name | escape }}</span>
+                        {%- if option_popular == 'true' or option_popular == 'True' -%}
+                          <span class="bridal-customizations__popular-tag">Popular</span>
+                        {%- endif -%}
+                      </div>
+                      {%- if option_description != blank -%}
+                        <p class="bridal-customizations__option-description">{{ option_description | escape }}</p>
+                      {%- endif -%}
+                    </div>
+                  </label>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </details>
+      </accordion-custom>
+    {% endif %}
+  </div>
+
+  {%- comment -%} Custom Instructions Textarea {%- endcomment -%}
+  {% if block_settings.show_custom_instructions %}
+    <div class="bridal-customizations__field">
+      <div class="bridal-customizations__header">
+        <label for="custom-instructions-toggle-{{ section.id }}" class="bridal-customizations__label">
+          {{ block_settings.custom_instructions_label | default: 'Custom Instructions' }}
+        </label>
+        <label class="bridal-customizations__toggle-wrapper">
+          <input
+            type="checkbox"
+            class="bridal-customizations__toggle"
+            id="custom-instructions-toggle-{{ section.id }}"
+            {% if block_settings.custom_instructions_enabled_by_default %}checked{% endif %}
+          >
+          <span class="bridal-customizations__toggle-slider"></span>
+        </label>
+      </div>
+      <div class="bridal-customizations__instructions-content" id="custom-instructions-content-{{ section.id }}">
+        <textarea
+          id="bridal-custom-instructions-{{ section.id }}"
+          name="properties[Custom Instructions]"
+          class="bridal-customizations__textarea"
+          form="{{ product_form_id }}"
+          placeholder="{{ block_settings.custom_instructions_placeholder | default: 'Enter any custom instructions or special requests...' }}"
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  (function() {
+    // Customizations toggle
+    const toggle = document.getElementById('customizations-toggle-{{ section.id }}');
+    const accordions = document.getElementById('customizations-accordions-{{ section.id }}');
+    
+    if (toggle && accordions) {
+      function updateAccordionsVisibility() {
+        if (toggle.checked) {
+          accordions.style.display = 'block';
+          accordions.setAttribute('aria-hidden', 'false');
+          // Don't open accordions - let them remain in their default state
+        } else {
+          accordions.style.display = 'none';
+          accordions.setAttribute('aria-hidden', 'true');
+          // Close all accordions when hiding
+          accordions.querySelectorAll('details').forEach(detail => {
+            detail.open = false;
+          });
+        }
+      }
+      
+      toggle.addEventListener('change', updateAccordionsVisibility);
+      updateAccordionsVisibility(); // Set initial state
+    }
+
+    // Custom Instructions toggle
+    const instructionsToggle = document.getElementById('custom-instructions-toggle-{{ section.id }}');
+    const instructionsContent = document.getElementById('custom-instructions-content-{{ section.id }}');
+    
+    if (instructionsToggle && instructionsContent) {
+      function updateInstructionsVisibility() {
+        if (instructionsToggle.checked) {
+          instructionsContent.style.display = 'block';
+          instructionsContent.setAttribute('aria-hidden', 'false');
+        } else {
+          instructionsContent.style.display = 'none';
+          instructionsContent.setAttribute('aria-hidden', 'true');
+        }
+      }
+      
+      instructionsToggle.addEventListener('change', updateInstructionsVisibility);
+      updateInstructionsVisibility(); // Set initial state
+    }
+  })();
+</script>
+
+{% stylesheet %}
+  .bridal-customizations {
+    width: 100%;
+  }
+
+  .bridal-customizations--boxed {
+    border: var(--style-border-width) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    padding: var(--padding-lg);
+    background-color: var(--color-background);
+  }
+
+  .bridal-customizations__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-end: var(--padding-sm);
+  }
+
+  .bridal-customizations__heading {
+    margin-block: 0;
+    font-size: var(--font-size--md);
+    font-weight: var(--font-body--weight);
+  }
+
+  .bridal-customizations__toggle-wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .bridal-customizations__toggle {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .bridal-customizations__toggle-slider {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    background-color: var(--color-border);
+    border-radius: 24px;
+    transition: background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .bridal-customizations__toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    top: 3px;
+    background-color: var(--color-background);
+    border-radius: 50%;
+    transition: transform var(--animation-speed) var(--animation-easing);
+  }
+
+  .bridal-customizations__toggle:checked + .bridal-customizations__toggle-slider {
+    background-color: var(--color-primary);
+  }
+
+  .bridal-customizations__toggle:checked + .bridal-customizations__toggle-slider::before {
+    transform: translateX(20px);
+  }
+
+  .bridal-customizations__description {
+    font-size: var(--font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    margin-block: 0 var(--padding-lg);
+  }
+
+  .bridal-customizations__accordions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-xs);
+    margin-block-end: var(--padding-lg);
+  }
+
+  .bridal-customizations__accordion-item {
+    width: 100%;
+  }
+
+  .bridal-customizations__details {
+    border: var(--style-border-width) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    overflow: clip;
+  }
+
+  .bridal-customizations__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--padding-md) var(--padding-lg);
+    cursor: pointer;
+    list-style: none;
+    background-color: var(--color-background);
+    transition: background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .bridal-customizations__summary:hover {
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+  }
+
+  .bridal-customizations__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .bridal-customizations__summary-text {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-xs);
+    font-size: var(--font-size--sm);
+    font-weight: var(--font-body--weight);
+    color: var(--color-foreground);
+  }
+
+  .bridal-customizations__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5em;
+    min-height: 1.5em;
+    padding: 0 0.35em;
+    border-radius: 50%;
+    background-color: #000;
+    color: #fff;
+    font-size: var(--font-size--xs);
+    font-weight: var(--font-body--weight);
+  }
+
+  .bridal-customizations__summary .icon-caret {
+    width: var(--icon-size-xs);
+    height: var(--icon-size-xs);
+    color: var(--color-foreground);
+    transition: transform var(--animation-speed) var(--animation-easing);
+  }
+
+  .bridal-customizations__details[open] .bridal-customizations__summary .icon-caret {
+    transform: rotate(90deg);
+  }
+
+  .bridal-customizations__options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-xs);
+    padding: var(--padding-md);
+    background-color: var(--color-background);
+  }
+
+  .bridal-customizations__option {
+    display: block;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .bridal-customizations__radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .bridal-customizations__option-content {
+    padding: var(--padding-md);
+    border: var(--style-border-width) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    background-color: var(--color-background);
+    transition: all var(--animation-speed) var(--animation-easing);
+  }
+
+  .bridal-customizations__option:hover .bridal-customizations__option-content {
+    border-color: var(--color-variant-hover-border);
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+  }
+
+  .bridal-customizations__radio:checked + .bridal-customizations__option-content {
+    border-color: var(--color-primary);
+    background-color: rgb(var(--color-primary-rgb) / var(--opacity-10));
+  }
+
+  .bridal-customizations__option-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--padding-sm);
+    margin-block-end: var(--padding-2xs);
+  }
+
+  .bridal-customizations__option-name {
+    font-size: var(--font-size--sm);
+    font-weight: var(--font-body--weight);
+    color: var(--color-foreground);
+  }
+
+  .bridal-customizations__popular-tag {
+    display: inline-block;
+    padding: var(--padding-2xs) var(--padding-xs);
+    background-color: rgb(255, 192, 203);
+    color: var(--color-foreground);
+    border-radius: 12px;
+    font-size: var(--font-size--xs);
+    font-weight: var(--font-body--weight);
+    white-space: nowrap;
+  }
+
+  .bridal-customizations__option-description {
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .bridal-customizations__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-xs);
+    margin-block-start: var(--padding-lg);
+  }
+
+  .bridal-customizations__instructions-content {
+    margin-block-start: var(--padding-sm);
+  }
+
+  .bridal-customizations__label {
+    font-size: var(--font-size--sm);
+    font-weight: var(--font-body--weight);
+    color: var(--color-foreground);
+  }
+
+  .bridal-customizations__textarea {
+    width: 100%;
+    padding: var(--padding-md);
+    border: var(--style-border-width-inputs) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    background-color: var(--color-input-background);
+    color: var(--color-input-text);
+    font-size: var(--font-size--sm);
+    font-family: var(--font-body--family);
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .bridal-customizations__textarea:focus-visible {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: var(--focus-outline-offset);
+    border-color: var(--color-foreground);
+  }
+
+  .bridal-customizations__textarea:hover {
+    border-color: var(--color-variant-hover-border);
+  }
+
+  .bridal-customizations__textarea::placeholder {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Bridal Customizations",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Customization Options"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Please select your customization options below. Each selection will be added to your order."
+    },
+    {
+      "type": "checkbox",
+      "id": "enabled_by_default",
+      "label": "Enabled by Default",
+      "default": false,
+      "info": "When checked, all customization options will be expanded by default"
+    },
+    {
+      "type": "header",
+      "content": "Neckline Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_neckline",
+      "label": "Show Neckline",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "neckline_label",
+      "label": "Neckline Label",
+      "default": "Neckline",
+      "visible_if": "{{ block.settings.show_neckline }}"
+    },
+    {
+      "type": "textarea",
+      "id": "neckline_options",
+      "label": "Neckline Options",
+      "info": "Enter one option per line. Format: Option Name|Description|Popular (true/false). Example: Sweetheart|Romantic sweetheart neckline|true",
+      "default": "Sweetheart|Romantic sweetheart neckline|false\nV-Neck|Elegant V-shaped neckline|false\nOff-Shoulder|Sophisticated off-shoulder style|false\nStrapless|Classic strapless design|false\nHigh Neck|Modest high neckline|false\nIllusion|Delicate illusion neckline|false",
+      "visible_if": "{{ block.settings.show_neckline }}"
+    },
+    {
+      "type": "header",
+      "content": "Sleeves Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sleeves",
+      "label": "Show Sleeves",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sleeves_label",
+      "label": "Sleeves Label",
+      "default": "Sleeves",
+      "visible_if": "{{ block.settings.show_sleeves }}"
+    },
+    {
+      "type": "textarea",
+      "id": "sleeves_options",
+      "label": "Sleeves Options",
+      "info": "Enter one option per line. Format: Option Name|Description|Popular (true/false)",
+      "default": "Sleeveless|Clean sleeveless design|false\nCap Sleeves|Delicate cap sleeves|false\nShort Sleeves|Classic short sleeves|false\n3/4 Sleeves|Elegant three-quarter sleeves|false\nLong Sleeves|Traditional long sleeves|false\nOff-Shoulder|Romantic off-shoulder sleeves|false",
+      "visible_if": "{{ block.settings.show_sleeves }}"
+    },
+    {
+      "type": "header",
+      "content": "Silhouette Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_silhouette",
+      "label": "Show Silhouette",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "silhouette_label",
+      "label": "Silhouette Label",
+      "default": "Silhouette",
+      "visible_if": "{{ block.settings.show_silhouette }}"
+    },
+    {
+      "type": "textarea",
+      "id": "silhouette_options",
+      "label": "Silhouette Options",
+      "info": "Enter one option per line. Format: Option Name|Description|Popular (true/false)",
+      "default": "A-Line|Flattering A-line silhouette|false\nBall Gown|Classic ball gown style|false\nMermaid|Dramatic mermaid silhouette|false\nSheath|Sleek sheath design|false\nTrumpet|Elegant trumpet silhouette|false\nFit and Flare|Modern fit and flare|false",
+      "visible_if": "{{ block.settings.show_silhouette }}"
+    },
+    {
+      "type": "header",
+      "content": "Train Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_train",
+      "label": "Show Train",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "train_label",
+      "label": "Train Label",
+      "default": "Train",
+      "visible_if": "{{ block.settings.show_train }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "train_open_by_default",
+      "label": "Open Train Section by Default",
+      "default": true,
+      "visible_if": "{{ block.settings.show_train }}"
+    },
+    {
+      "type": "textarea",
+      "id": "train_options",
+      "label": "Train Options",
+      "info": "Enter one option per line. Format: Option Name|Description|Popular (true/false)",
+      "default": "No Train|Clean hemline without train|false\nSweep Train|Subtle sweep train|false\nChapel Train|Traditional chapel train|true\nCathedral Train|Dramatic cathedral train|true\nRoyal Train|Grand royal train|false",
+      "visible_if": "{{ block.settings.show_train }}"
+    },
+    {
+      "type": "header",
+      "content": "Details Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_details",
+      "label": "Show Details",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "details_label",
+      "label": "Details Label",
+      "default": "Details",
+      "visible_if": "{{ block.settings.show_details }}"
+    },
+    {
+      "type": "textarea",
+      "id": "details_options",
+      "label": "Details Options",
+      "info": "Enter one option per line. Format: Option Name|Description|Popular (true/false)",
+      "default": "Beading|Elegant beading details|false\nLace|Delicate lace accents|false\nEmbroidery|Intricate embroidery work|false\nSequins|Sparkling sequin details|false\nAppliqué|Beautiful appliqué designs|false\nRuffles|Romantic ruffle details|false",
+      "visible_if": "{{ block.settings.show_details }}"
+    },
+    {
+      "type": "header",
+      "content": "Fabric Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fabric",
+      "label": "Show Fabric",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "fabric_label",
+      "label": "Fabric Label",
+      "default": "Fabric",
+      "visible_if": "{{ block.settings.show_fabric }}"
+    },
+    {
+      "type": "textarea",
+      "id": "fabric_options",
+      "label": "Fabric Options",
+      "info": "Enter one option per line. Format: Option Name|Description|Popular (true/false)",
+      "default": "Satin|Luxurious satin fabric|false\nTulle|Delicate tulle material|false\nChiffon|Elegant chiffon fabric|false\nOrganza|Sheer organza material|false\nLace|Beautiful lace fabric|false\nTaffeta|Classic taffeta material|false\nMikado|Structured mikado fabric|false",
+      "visible_if": "{{ block.settings.show_fabric }}"
+    },
+    {
+      "type": "header",
+      "content": "Custom Instructions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_custom_instructions",
+      "label": "Show Custom Instructions",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "custom_instructions_label",
+      "label": "Custom Instructions Label",
+      "default": "Custom Instructions",
+      "visible_if": "{{ block.settings.show_custom_instructions }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_instructions_enabled_by_default",
+      "label": "Custom Instructions Enabled by Default",
+      "default": false,
+      "visible_if": "{{ block.settings.show_custom_instructions }}"
+    },
+    {
+      "type": "text",
+      "id": "custom_instructions_placeholder",
+      "label": "Placeholder Text",
+      "default": "Enter any custom instructions or special requests...",
+      "visible_if": "{{ block.settings.show_custom_instructions }}"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bridal Customizations",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

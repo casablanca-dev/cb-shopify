@@ -1,0 +1,323 @@
+
+{%- liquid
+  assign block_settings = block.settings
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+
+  # Get product metafields for B2B info
+  assign style_number = product.metafields.custom.style_number | default: block_settings.style_number
+  assign brand_name = product.metafields.custom.brand_name | default: block_settings.brand_name
+  assign collection_name = product.metafields.custom.collection_name | default: block_settings.collection_name
+  assign season_code = product.metafields.custom.season_code | default: block_settings.season_code
+  assign warehouse_price = product.metafields.custom.warehouse_price | default: product.price
+  assign rrp_price = product.metafields.custom.rrp_price | default: product.compare_at_price
+  assign warehouse_location = product.metafields.custom.warehouse_location | default: block_settings.warehouse_location
+-%}
+
+<div
+  class="product-header-b2b spacing-style"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  <div class="product-header-b2b__top">
+    <div class="product-header-b2b__main">
+      {% if block_settings.show_title %}
+        <h1 class="product-header-b2b__title">
+          {{ product.title | default: 'Product Name' }}
+        </h1>
+      {% endif %}
+
+      {% if style_number != blank or brand_name != blank or collection_name != blank or season_code != blank %}
+        <div class="product-header-b2b__meta">
+          {% if style_number != blank %}<span>{{ style_number }}</span>{% endif %}
+          {% if brand_name != blank %}<span>|</span><span>{{ brand_name }}</span>{% endif %}
+          {% if collection_name != blank %}<span>|</span><span>{{ collection_name }}</span>{% endif %}
+          {% if season_code != blank %}<span>|</span><span>{{ season_code }}</span>{% endif %}
+        </div>
+      {% endif %}
+
+      {% if block_settings.show_pricing %}
+        <div class="product-header-b2b__pricing">
+          {% if warehouse_price != blank %}
+            <span class="product-header-b2b__price-label">WH.PR</span>
+            <span class="product-header-b2b__price">{{ warehouse_price | money }}</span>
+          {% endif %}
+          {% if rrp_price != blank %}
+            <span class="product-header-b2b__price-label">RRP</span>
+            <span class="product-header-b2b__price">{{ rrp_price | money }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block_settings.show_description and product.description != blank %}
+        <div class="product-header-b2b__description">
+          {{ product.description }}
+        </div>
+      {% endif %}
+
+      {% if block_settings.show_wishlist %}
+        <button
+          type="button"
+          class="product-header-b2b__wishlist button button--tertiary"
+          data-product-id="{{ product.id }}"
+        >
+          <span class="svg-wrapper">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 20 20" fill="none">
+              <path d="M10 18.35L8.55 17.03C3.4 12.36 0 9.28 0 5.5 0 2.42 2.42 0 5.5 0c1.74 0 3.41.81 4.5 2.09C11.09.81 12.76 0 14.5 0 17.58 0 20 2.42 20 5.5c0 3.78-3.4 6.86-8.55 11.54L10 18.35z" fill="currentColor"/>
+            </svg>
+          </span>
+          {{ block_settings.wishlist_label | default: 'Add to Wishlist' }}
+        </button>
+      {% endif %}
+    </div>
+
+    {% if block_settings.show_warehouse_location and warehouse_location != blank %}
+      <button
+        type="button"
+        class="product-header-b2b__warehouse button button--tertiary"
+        data-warehouse-location="{{ warehouse_location }}"
+      >
+        {{ block_settings.warehouse_label | default: 'Warehouse Location' }}
+        <span class="svg-wrapper">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 10 6" fill="none">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </button>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .product-header-b2b {
+    width: 100%;
+  }
+
+  .product-header-b2b__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--padding-lg);
+    flex-wrap: wrap;
+  }
+
+  .product-header-b2b__main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .product-header-b2b__title {
+    font-size: var(--font-size--xl);
+    font-weight: var(--font-primary--weight);
+    margin-block: 0 var(--padding-sm);
+    line-height: 1.2;
+  }
+
+  .product-header-b2b__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--padding-xs);
+    font-size: var(--font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    margin-block-end: var(--padding-sm);
+  }
+
+  .product-header-b2b__pricing {
+    display: flex;
+    gap: var(--padding-md);
+    align-items: baseline;
+    margin-block-end: var(--padding-md);
+    font-size: var(--font-size--md);
+  }
+
+  .product-header-b2b__price-label {
+    font-weight: var(--font-body--weight);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .product-header-b2b__price {
+    font-weight: var(--font-primary--weight);
+    color: var(--color-foreground);
+  }
+
+  .product-header-b2b__description {
+    margin-block-end: var(--padding-md);
+    font-size: var(--font-size--sm);
+    line-height: 1.6;
+    color: var(--color-foreground);
+  }
+
+  .product-header-b2b__wishlist {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-xs);
+  }
+
+  .product-header-b2b__wishlist .svg-wrapper {
+    width: var(--icon-size-sm);
+    height: var(--icon-size-sm);
+  }
+
+  .product-header-b2b__warehouse {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--padding-xs);
+    white-space: nowrap;
+  }
+
+  .product-header-b2b__warehouse .svg-wrapper {
+    width: var(--icon-size-xs);
+    height: var(--icon-size-xs);
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-header-b2b__top {
+      flex-direction: column;
+    }
+
+    .product-header-b2b__warehouse {
+      align-self: flex-end;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product Header B2B",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Display Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Product Title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pricing",
+      "label": "Show Pricing",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show Description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show Wishlist Button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_warehouse_location",
+      "label": "Show Warehouse Location",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product Information"
+    },
+    {
+      "type": "text",
+      "id": "style_number",
+      "label": "Style Number (fallback)",
+      "info": "Will use product metafield if available"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name (fallback)",
+      "info": "Will use product metafield if available"
+    },
+    {
+      "type": "text",
+      "id": "collection_name",
+      "label": "Collection Name (fallback)",
+      "info": "Will use product metafield if available"
+    },
+    {
+      "type": "text",
+      "id": "season_code",
+      "label": "Season Code (fallback)",
+      "info": "Will use product metafield if available"
+    },
+    {
+      "type": "text",
+      "id": "warehouse_location",
+      "label": "Warehouse Location (fallback)",
+      "info": "Will use product metafield if available"
+    },
+    {
+      "type": "text",
+      "id": "wishlist_label",
+      "label": "Wishlist Button Label",
+      "default": "Add to Wishlist"
+    },
+    {
+      "type": "text",
+      "id": "warehouse_label",
+      "label": "Warehouse Button Label",
+      "default": "Warehouse Location"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Header B2B",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

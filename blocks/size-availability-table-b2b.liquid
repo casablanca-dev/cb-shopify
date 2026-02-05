@@ -1,0 +1,436 @@
+
+{%- liquid
+  assign block_settings = block.settings
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+
+  assign product_form_id = 'BuyButtons-ProductForm-' | append: section.id
+  
+  # Size options (2-20, even numbers)
+  assign sizes = '2,4,6,8,10,12,14,16,18,20' | split: ','
+-%}
+
+<div
+  class="size-availability-table-b2b spacing-style"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  <h3 class="size-availability-table-b2b__heading">
+    {{ block_settings.heading | default: 'Please Select Your Size and Shipping Window' }}
+  </h3>
+
+  <div class="size-availability-table-b2b__table-wrapper">
+    <table class="size-availability-table-b2b__table">
+      <thead>
+        <tr>
+          <th class="size-availability-table-b2b__header-cell size-availability-table-b2b__header-cell--label"></th>
+          {%- for size in sizes -%}
+            <th class="size-availability-table-b2b__header-cell">{{ size }}</th>
+          {%- endfor -%}
+        </tr>
+      </thead>
+      <tbody>
+        {%- comment -%} ATS Row {%- endcomment -%}
+        {% if block_settings.show_ats %}
+          <tr class="size-availability-table-b2b__row">
+            <td class="size-availability-table-b2b__label-cell">
+              <strong>{{ block_settings.ats_label | default: 'ATS' }}</strong>
+            </td>
+            {%- for size in sizes -%}
+              <td class="size-availability-table-b2b__cell">
+                <span class="size-availability-table-b2b__stock-count" data-size="{{ size }}" data-type="ats">
+                  {{ block_settings.ats_default_stock | default: '0' }}
+                </span>
+              </td>
+            {%- endfor -%}
+          </tr>
+        {% endif %}
+
+        {%- comment -%} 6w Rush Row {%- endcomment -%}
+        {% if block_settings.show_6w_rush %}
+          <tr class="size-availability-table-b2b__row">
+            <td class="size-availability-table-b2b__label-cell">
+              <strong>{{ block_settings.rush_6w_label | default: '6w Rush' }}</strong>
+            </td>
+            {%- for size in sizes -%}
+              <td class="size-availability-table-b2b__cell">
+                <button
+                  type="button"
+                  class="size-availability-table-b2b__order-button"
+                  data-size="{{ size }}"
+                  data-shipping="6w-rush"
+                  form="{{ product_form_id }}"
+                >
+                  {{ block_settings.order_button_text | default: 'Order' }}
+                </button>
+              </td>
+            {%- endfor -%}
+          </tr>
+        {% endif %}
+
+        {%- comment -%} 8w Rush Row {%- endcomment -%}
+        {% if block_settings.show_8w_rush %}
+          <tr class="size-availability-table-b2b__row">
+            <td class="size-availability-table-b2b__label-cell">
+              <strong>{{ block_settings.rush_8w_label | default: '8w Rush' }}</strong>
+            </td>
+            {%- for size in sizes -%}
+              <td class="size-availability-table-b2b__cell">
+                <button
+                  type="button"
+                  class="size-availability-table-b2b__order-button"
+                  data-size="{{ size }}"
+                  data-shipping="8w-rush"
+                  form="{{ product_form_id }}"
+                >
+                  {{ block_settings.order_button_text | default: 'Order' }}
+                </button>
+              </td>
+            {%- endfor -%}
+          </tr>
+        {% endif %}
+
+        {%- comment -%} 12w STD Row {%- endcomment -%}
+        {% if block_settings.show_12w_std %}
+          <tr class="size-availability-table-b2b__row">
+            <td class="size-availability-table-b2b__label-cell">
+              <strong>{{ block_settings.std_12w_label | default: '12w STD' }}</strong>
+            </td>
+            {%- for size in sizes -%}
+              <td class="size-availability-table-b2b__cell">
+                <button
+                  type="button"
+                  class="size-availability-table-b2b__order-button"
+                  data-size="{{ size }}"
+                  data-shipping="12w-std"
+                  form="{{ product_form_id }}"
+                >
+                  {{ block_settings.order_button_text | default: 'Order' }}
+                </button>
+              </td>
+            {%- endfor -%}
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Handle order button clicks
+    document.querySelectorAll('.size-availability-table-b2b__order-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const size = this.dataset.size;
+        const shipping = this.dataset.shipping;
+        
+        // Set size and shipping as properties
+        const form = document.getElementById('{{ product_form_id }}');
+        if (form) {
+          // Remove existing size/shipping properties
+          form.querySelectorAll('input[name^="properties[Size]"], input[name^="properties[Shipping]"]').forEach(input => {
+            input.remove();
+          });
+          
+          // Add new properties
+          const sizeInput = document.createElement('input');
+          sizeInput.type = 'hidden';
+          sizeInput.name = 'properties[Size]';
+          sizeInput.value = size;
+          form.appendChild(sizeInput);
+          
+          const shippingInput = document.createElement('input');
+          shippingInput.type = 'hidden';
+          shippingInput.name = 'properties[Shipping Window]';
+          shippingInput.value = shipping;
+          form.appendChild(shippingInput);
+          
+          // Trigger add to cart (you may need to adjust this based on your form structure)
+          const addToCartButton = form.querySelector('button[type="submit"], add-to-cart-component button');
+          if (addToCartButton) {
+            addToCartButton.click();
+          }
+        }
+      });
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .size-availability-table-b2b {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .size-availability-table-b2b__heading {
+    font-size: var(--font-size--md);
+    font-weight: var(--font-body--weight);
+    margin-block: 0 var(--padding-md);
+  }
+
+  .size-availability-table-b2b__table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .size-availability-table-b2b__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 600px;
+    border: var(--style-border-width) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    overflow: hidden;
+  }
+
+  .size-availability-table-b2b__header-cell {
+    padding: var(--padding-md) var(--padding-sm);
+    text-align: center;
+    font-size: var(--font-size--sm);
+    font-weight: var(--font-body--weight);
+    color: var(--color-foreground);
+    border-bottom: var(--style-border-width) solid var(--color-border);
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
+    border-right: var(--style-border-width) solid var(--color-border);
+  }
+
+  .size-availability-table-b2b__header-cell:last-child {
+    border-right: none;
+  }
+
+  .size-availability-table-b2b__header-cell--label {
+    text-align: left;
+    background-color: transparent;
+    padding-inline-start: 0;
+  }
+
+  .size-availability-table-b2b__row {
+    border-bottom: var(--style-border-width) solid var(--color-border);
+    background-color: var(--color-background);
+    transition: background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .size-availability-table-b2b__row:last-child {
+    border-bottom: none;
+  }
+
+  .size-availability-table-b2b__row:hover {
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-3));
+  }
+
+  .size-availability-table-b2b__label-cell {
+    padding: var(--padding-md) var(--padding-lg);
+    text-align: left;
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
+    white-space: nowrap;
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+    border-right: var(--style-border-width) solid var(--color-border);
+    font-weight: var(--font-body--weight);
+  }
+
+  .size-availability-table-b2b__cell {
+    padding: var(--padding-md) var(--padding-sm);
+    text-align: center;
+    vertical-align: middle;
+    border-right: var(--style-border-width) solid var(--color-border);
+  }
+
+  .size-availability-table-b2b__cell:last-child {
+    border-right: none;
+  }
+
+  .size-availability-table-b2b__stock-count {
+    display: inline-block;
+    font-size: var(--font-size--sm);
+    font-weight: var(--font-body--weight);
+    color: var(--color-foreground);
+    min-width: 24px;
+  }
+
+  .size-availability-table-b2b__order-button {
+    padding: var(--padding-xs) var(--padding-sm);
+    font-size: var(--font-size--xs);
+    background-color: rgb(255, 192, 203);
+    color: var(--color-foreground);
+    border: 1px solid rgb(255, 182, 193);
+    border-radius: var(--style-border-radius-inputs);
+    cursor: pointer;
+    transition: all var(--animation-speed) var(--animation-easing);
+    white-space: nowrap;
+    font-weight: var(--font-body--weight);
+  }
+
+  .size-availability-table-b2b__order-button:hover {
+    background-color: rgb(255, 182, 193);
+    border-color: rgb(255, 160, 180);
+  }
+
+  .size-availability-table-b2b__order-button:focus-visible {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  @media screen and (max-width: 749px) {
+    .size-availability-table-b2b__table {
+      font-size: var(--font-size--xs);
+    }
+
+    .size-availability-table-b2b__header-cell,
+    .size-availability-table-b2b__cell {
+      padding: var(--padding-xs);
+    }
+
+    .size-availability-table-b2b__order-button {
+      padding: var(--padding-2xs) var(--padding-xs);
+      font-size: 10px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .size-availability-table-b2b__table {
+      min-width: 500px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Size Availability Table",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Table Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Table Heading",
+      "default": "Please Select Your Size and Shipping Window"
+    },
+    {
+      "type": "header",
+      "content": "Row Visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ats",
+      "label": "Show ATS (Available To Ship)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "ats_label",
+      "label": "ATS Label",
+      "default": "ATS",
+      "visible_if": "{{ block.settings.show_ats }}"
+    },
+    {
+      "type": "text",
+      "id": "ats_default_stock",
+      "label": "Default ATS Stock Count",
+      "default": "0",
+      "info": "This is a placeholder. In production, this should come from inventory data.",
+      "visible_if": "{{ block.settings.show_ats }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_6w_rush",
+      "label": "Show 6w Rush",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rush_6w_label",
+      "label": "6w Rush Label",
+      "default": "6w Rush",
+      "visible_if": "{{ block.settings.show_6w_rush }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_8w_rush",
+      "label": "Show 8w Rush",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rush_8w_label",
+      "label": "8w Rush Label",
+      "default": "8w Rush",
+      "visible_if": "{{ block.settings.show_8w_rush }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_12w_std",
+      "label": "Show 12w STD",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "std_12w_label",
+      "label": "12w STD Label",
+      "default": "12w STD",
+      "visible_if": "{{ block.settings.show_12w_std }}"
+    },
+    {
+      "type": "text",
+      "id": "order_button_text",
+      "label": "Order Button Text",
+      "default": "Order"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size Availability Table",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
