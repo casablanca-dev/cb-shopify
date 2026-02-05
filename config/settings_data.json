@@ -10,8 +10,8 @@
 {
   "current": {
     "logo": "shopify://shop_images/Casablanca_Bridal_Logo_Black_197b26ce-9df1-4ef4-bedd-4f6c43e9cb85.jpg",
-    "logo_height": 72,
-    "logo_height_mobile": 56,
+    "logo_height": 100,
+    "logo_height_mobile": 65,
     "type_body_font": "inter_n4",
     "type_subheading_font": "inter_n5",
     "type_heading_font": "inter_n7",

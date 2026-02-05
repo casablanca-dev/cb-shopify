@@ -8,144 +8,529 @@
  * ------------------------------------------------------------
  */{
   "sections": {
-    "main": {
-      "type": "main-page",
-      "blocks": {
-        "title": {
-          "type": "text",
-          "name": "t:names.title",
-          "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "h2",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "content": {
-          "type": "text",
-          "name": "t:names.content",
-          "settings": {
-            "text": "{{ closest.page.content }}",
-            "width": "100%",
-            "max_width": "narrow",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "title",
-        "content"
-      ],
-      "settings": {
-        "content_direction": "column",
-        "gap": 32,
-        "color_scheme": "",
-        "padding-block-start": 40,
-        "padding-block-end": 0
-      }
-    },
-    "form": {
+    "breadcrumb": {
       "type": "section",
       "blocks": {
-        "contact_form_UwiCkQ": {
-          "type": "contact-form",
+        "breadcrumb_text": {
+          "type": "text",
           "settings": {
-            "width": "custom",
-            "custom_width": 50,
-            "width_mobile": "custom",
-            "custom_width_mobile": 100,
+            "text": "<p>Home > Contact Us</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "#666666",
+            "background": false,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        }
+      },
+      "block_order": ["breadcrumb_text"],
+      "settings": {
+        "content_direction": "column",
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "gap": 0,
+        "section_width": "page-width",
+        "section_height": "",
+        "color_scheme": "scheme-1",
+        "background_media": "none",
+        "border": "none",
+        "padding-block-start": 16,
+        "padding-block-end": 8
+      }
+    },
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "settings": {
+            "text": "<h1>Contact Us</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h1",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "#ffffff",
+            "background": false,
+            "padding-block-start": 0,
+            "padding-block-end": 16
+          }
+        },
+        "description": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae dui convallis, mollis orci ac, lacinia neque. Phasellus mollis laoreet nisl. Suspendisse potenti. Phasellus placerat ligula vel diam vehicula ultricies. Donec nulla massa, hendrerit quis augue et.</p>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "1.6",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "#ffffff",
+            "background": false,
+            "padding-block-start": 0,
+            "padding-block-end": 24
+          }
+        },
+        "faq_link": {
+          "type": "text",
+          "settings": {
+            "text": "<p><u><a href=\"/pages/faq\">See FAQs click here.</a></u></p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "#ffffff",
+            "background": false,
+            "padding-block-start": 0,
+            "padding-block-end": 0
+          }
+        }
+      },
+      "block_order": ["heading", "description", "faq_link"],
+      "settings": {
+        "media_type_1": "image",
+        "content_direction": "column",
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "page-width",
+        "section_height": "small",
+        "color_scheme": "scheme-5",
+        "toggle_overlay": true,
+        "overlay_color": "#3b82a0cc",
+        "overlay_style": "solid",
+        "padding-block-start": 60,
+        "padding-block-end": 60
+      }
+    },
+    "info_cards": {
+      "type": "section",
+      "blocks": {
+        "card_email": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 16,
+            "width": "fill",
+            "height": "fit",
             "inherit_color_scheme": true,
-            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 20,
+            "border_radius": 12,
+            "padding-block-start": 40,
+            "padding-block-end": 40,
+            "padding-inline-start": 24,
+            "padding-inline-end": 24
+          },
+          "blocks": {
+            "email_icon": {
+              "type": "icon",
+              "settings": {
+                "icon": "chat_bubble",
+                "width": 40
+              }
+            },
+            "email_title": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Customer Service</h3>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "padding-block-start": 8,
+                "padding-block-end": 0
+              }
+            },
+            "email_value": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"mailto:hello@casablancabridal.com\">hello@casablancabridal.com</a></p>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "color": "#3b82a0",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
+            }
+          },
+          "block_order": ["email_icon", "email_title", "email_value"]
+        },
+        "card_phone": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 16,
+            "width": "fill",
+            "height": "fit",
+            "inherit_color_scheme": true,
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 20,
+            "border_radius": 12,
+            "padding-block-start": 40,
+            "padding-block-end": 40,
+            "padding-inline-start": 24,
+            "padding-inline-end": 24
+          },
+          "blocks": {
+            "phone_icon": {
+              "type": "icon",
+              "settings": {
+                "icon": "chat_bubble",
+                "width": 40
+              }
+            },
+            "phone_title": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Phone</h3>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "padding-block-start": 8,
+                "padding-block-end": 0
+              }
+            },
+            "phone_value": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"tel:+15550000000\">+1 (555) 000-0000</a></p>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "color": "#3b82a0",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
+            }
+          },
+          "block_order": ["phone_icon", "phone_title", "phone_value"]
+        },
+        "card_office": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 16,
+            "width": "fill",
+            "height": "fit",
+            "inherit_color_scheme": true,
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 20,
+            "border_radius": 12,
+            "padding-block-start": 40,
+            "padding-block-end": 40,
+            "padding-inline-start": 24,
+            "padding-inline-end": 24
+          },
+          "blocks": {
+            "office_icon": {
+              "type": "icon",
+              "settings": {
+                "icon": "map_pin",
+                "width": 40
+              }
+            },
+            "office_title": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Office</h3>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "padding-block-start": 8,
+                "padding-block-end": 0
+              }
+            },
+            "office_value": {
+              "type": "text",
+              "settings": {
+                "text": "<p>2140 E Winston Rd<br>Anaheim, CA 92806</p>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
+            }
+          },
+          "block_order": ["office_icon", "office_title", "office_value"]
+        },
+        "card_hours": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 16,
+            "width": "fill",
+            "height": "fit",
+            "inherit_color_scheme": true,
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 20,
+            "border_radius": 12,
+            "padding-block-start": 40,
+            "padding-block-end": 40,
+            "padding-inline-start": 24,
+            "padding-inline-end": 24
+          },
+          "blocks": {
+            "hours_icon": {
+              "type": "icon",
+              "settings": {
+                "icon": "stopwatch",
+                "width": 40
+              }
+            },
+            "hours_title": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Hours</h3>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "padding-block-start": 8,
+                "padding-block-end": 0
+              }
+            },
+            "hours_value": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Monday - Friday<br>9:00am - 5:00pm PST</p>",
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
+            }
+          },
+          "block_order": ["hours_icon", "hours_title", "hours_value"]
+        }
+      },
+      "block_order": ["card_email", "card_phone", "card_office", "card_hours"],
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "stretch",
+        "gap": 24,
+        "section_width": "page-width",
+        "section_height": "",
+        "color_scheme": "scheme-1",
+        "background_media": "none",
+        "border": "none",
+        "padding-block-start": 60,
+        "padding-block-end": 60
+      }
+    },
+    "departments": {
+      "type": "section",
+      "blocks": {
+        "dept_1": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "height": "fit",
+            "inherit_color_scheme": true,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {
-            "submit-button": {
-              "type": "contact-form-submit-button",
-              "static": true,
+            "dept1_title": {
+              "type": "text",
               "settings": {
-                "label": "Submit",
-                "style_class": "button",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
+                "text": "<h4>Department 1</h4>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
+            },
+            "dept1_email": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"mailto:domain@casablancabridal.com\">domain@casablancabridal.com</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "color": "#3b82a0",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
             }
           },
-          "block_order": []
+          "block_order": ["dept1_title", "dept1_email"]
+        },
+        "dept_2": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "height": "fit",
+            "inherit_color_scheme": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "dept2_title": {
+              "type": "text",
+              "settings": {
+                "text": "<h4>Department 2</h4>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
+            },
+            "dept2_email": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"mailto:domain@casablancabridal.com\">domain@casablancabridal.com</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "color": "#3b82a0",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
+            }
+          },
+          "block_order": ["dept2_title", "dept2_email"]
+        },
+        "dept_3": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 8,
+            "width": "fill",
+            "height": "fit",
+            "inherit_color_scheme": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "dept3_title": {
+              "type": "text",
+              "settings": {
+                "text": "<h4>Department 3</h4>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "h5",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
+            },
+            "dept3_email": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"mailto:domain@casablancabridal.com\">domain@casablancabridal.com</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "color": "#3b82a0",
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              }
+            }
+          },
+          "block_order": ["dept3_title", "dept3_email"]
         }
       },
-      "block_order": [
-        "contact_form_UwiCkQ"
-      ],
-      "name": "t:names.contact_form",
+      "block_order": ["dept_1", "dept_2", "dept_3"],
       "settings": {
-        "content_direction": "column",
+        "content_direction": "row",
         "vertical_on_mobile": true,
         "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
+        "vertical_alignment": "flex-start",
         "gap": 32,
         "section_width": "page-width",
         "section_height": "",
-        "section_height_custom": 50,
         "color_scheme": "scheme-1",
         "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
         "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 32,
-        "padding-block-end": 84
+        "padding-block-start": 0,
+        "padding-block-end": 80
       }
     }
   },
   "order": [
-    "main",
-    "form"
+    "breadcrumb",
+    "hero",
+    "info_cards",
+    "departments"
   ]
 }
