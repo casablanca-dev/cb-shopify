@@ -1,0 +1,26 @@
+{
+  "name": "casablanca-theme",
+  "version": "1.0.0",
+  "description": "Casablanca Bridal Shopify Theme",
+  "scripts": {
+    "build:css": "postcss src/tailwind.css -o assets/tailwind.min.css --env production",
+    "watch:css": "postcss src/tailwind.css -o assets/tailwind.min.css --watch",
+    "build:js": "esbuild src/animations.js --bundle --minify --outfile=assets/animations.min.js --format=iife --global-name=CasablancaAnimations",
+    "watch:js": "esbuild src/animations.js --bundle --outfile=assets/animations.min.js --format=iife --global-name=CasablancaAnimations --watch",
+    "build": "npm run build:css && npm run build:js",
+    "watch": "concurrently \"npm run watch:css\" \"npm run watch:js\"",
+    "dev": "concurrently \"npm run watch:css\" \"npm run watch:js\" \"shopify theme dev\""
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.35",
+    "postcss-cli": "^11.0.0",
+    "autoprefixer": "^10.4.17",
+    "cssnano": "^6.0.3",
+    "concurrently": "^8.2.2",
+    "esbuild": "^0.20.0"
+  },
+  "dependencies": {
+    "motion": "^10.18.0"
+  }
+}

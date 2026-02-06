@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build artifacts (generated files - keep in .gitignore for cleaner repo)
+# Note: You may want to commit these if deploying via Shopify CLI without build step
+# assets/tailwind.min.css
+# assets/animations.min.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local

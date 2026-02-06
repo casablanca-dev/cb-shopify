@@ -1,0 +1,195 @@
+{%- comment -%}
+  Animation Demo Snippet
+  
+  This snippet demonstrates how to use the Motion One animations
+  integrated into the theme. Include this snippet on any page to 
+  see the animations in action.
+  
+  Usage: {% render 'animation-demo' %}
+  
+  Available animation classes:
+  
+  SCROLL-TRIGGERED ANIMATIONS (auto-animate when element enters viewport):
+  - .animate-on-scroll    - Fades in and slides up
+  - .animate-fade-in      - Simple fade in
+  - .animate-slide-up     - Slides up with fade
+  - .animate-scale-in     - Scales in from 95% with fade
+  - .stagger-children     - Container class - animates children sequentially
+  
+  INTERACTIVE ANIMATIONS:
+  - .card-animate         - Scales up slightly on hover
+  - .btn-animate          - Scales up on hover, down on click
+  
+  PARALLAX EFFECT:
+  - .parallax             - Moves slower than scroll (set data-parallax-speed)
+  
+  IMAGE REVEAL:
+  - .image-reveal         - Curtain reveal effect on scroll
+  
+  COUNTER:
+  - .counter              - Counts up to data-target value
+  
+  TAILWIND CLASSES (prefixed with 'tw-'):
+  - tw-flex, tw-grid, tw-p-4, tw-bg-brand-blue, etc.
+  - See tailwind.config.js for custom colors and values
+{%- endcomment -%}
+
+<style>
+  .animation-demo {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .animation-demo-section {
+    margin-bottom: 60px;
+  }
+  .animation-demo-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-border, #e5e5e5);
+  }
+  .animation-demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+  }
+  .demo-card {
+    background: var(--color-background, #fff);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-align: center;
+  }
+  .demo-card h4 {
+    margin-bottom: 8px;
+    font-size: 1.125rem;
+  }
+  .demo-card p {
+    color: #666;
+    font-size: 0.875rem;
+  }
+  .demo-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #3b82a0;
+    color: white;
+    border-radius: 8px;
+    margin: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .demo-button:hover {
+    background: #2d6a7f;
+  }
+</style>
+
+<div class="animation-demo">
+  {%- comment -%} Scroll Animations {%- endcomment -%}
+  <section class="animation-demo-section">
+    <h3 class="animation-demo-title">Scroll-Triggered Animations</h3>
+    <div class="animation-demo-grid">
+      <div class="demo-card animate-on-scroll">
+        <h4>Animate On Scroll</h4>
+        <p>.animate-on-scroll</p>
+        <p>Fades in and slides up when entering viewport</p>
+      </div>
+      <div class="demo-card animate-fade-in">
+        <h4>Fade In</h4>
+        <p>.animate-fade-in</p>
+        <p>Simple fade in effect</p>
+      </div>
+      <div class="demo-card animate-slide-up">
+        <h4>Slide Up</h4>
+        <p>.animate-slide-up</p>
+        <p>Slides up with custom easing</p>
+      </div>
+      <div class="demo-card animate-scale-in">
+        <h4>Scale In</h4>
+        <p>.animate-scale-in</p>
+        <p>Scales in from 95% size</p>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Stagger Animation {%- endcomment -%}
+  <section class="animation-demo-section">
+    <h3 class="animation-demo-title">Stagger Animation (children animate in sequence)</h3>
+    <div class="animation-demo-grid stagger-children">
+      <div class="demo-card">
+        <h4>First Item</h4>
+        <p>Animates first</p>
+      </div>
+      <div class="demo-card">
+        <h4>Second Item</h4>
+        <p>Animates second</p>
+      </div>
+      <div class="demo-card">
+        <h4>Third Item</h4>
+        <p>Animates third</p>
+      </div>
+      <div class="demo-card">
+        <h4>Fourth Item</h4>
+        <p>Animates fourth</p>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Interactive Animations {%- endcomment -%}
+  <section class="animation-demo-section">
+    <h3 class="animation-demo-title">Interactive Animations (hover to see effect)</h3>
+    <div class="animation-demo-grid">
+      <div class="demo-card card-animate">
+        <h4>Card Hover</h4>
+        <p>.card-animate</p>
+        <p>Hover me - I scale up slightly</p>
+      </div>
+      <div class="demo-card">
+        <h4>Button Hover</h4>
+        <p>.btn-animate</p>
+        <span class="demo-button btn-animate">Hover & Click Me</span>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Counter Animation {%- endcomment -%}
+  <section class="animation-demo-section">
+    <h3 class="animation-demo-title">Counter Animation</h3>
+    <div class="animation-demo-grid">
+      <div class="demo-card">
+        <h4>Counter</h4>
+        <p>.counter with data-target</p>
+        <p style="font-size: 3rem; font-weight: bold; color: #3b82a0;">
+          <span class="counter" data-target="500" data-duration="2">0</span>
+        </p>
+      </div>
+      <div class="demo-card">
+        <h4>Counter (Larger)</h4>
+        <p>.counter with longer duration</p>
+        <p style="font-size: 3rem; font-weight: bold; color: #3b82a0;">
+          <span class="counter" data-target="1250" data-duration="3">0</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} Tailwind Examples {%- endcomment -%}
+  <section class="animation-demo-section">
+    <h3 class="animation-demo-title">Tailwind CSS Examples (tw- prefix)</h3>
+    <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-6">
+      <div class="tw-bg-brand-blue tw-text-white tw-p-6 tw-rounded-lg tw-shadow-card">
+        <h4 class="tw-font-bold tw-mb-2">Brand Blue Card</h4>
+        <p class="tw-text-sm tw-opacity-90">Using tw-bg-brand-blue and tw-shadow-card</p>
+      </div>
+      <div class="tw-border tw-border-current tw-p-6 tw-rounded-lg tw-transition-all tw-duration-200 hover:tw-shadow-card-hover">
+        <h4 class="tw-font-bold tw-mb-2">Bordered Card</h4>
+        <p class="tw-text-sm">Hover for shadow effect</p>
+      </div>
+      <div class="tw-bg-brand-rose tw-p-6 tw-rounded-lg">
+        <h4 class="tw-font-bold tw-mb-2 tw-text-white">Brand Rose</h4>
+        <p class="tw-text-sm tw-text-white tw-opacity-90">Using tw-bg-brand-rose</p>
+      </div>
+    </div>
+  </section>
+</div>

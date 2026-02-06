@@ -52,16 +52,104 @@
       {% endif %}
 
       {% if block_settings.show_ship_dates %}
-        <div class="header-utility-bar__item">
-          <a
-            href="{{ block_settings.ship_dates_url | default: '#' }}"
-            class="header-utility-bar__link"
+        <div class="header-utility-bar__item ship-dates-dropdown" data-ship-dates-dropdown>
+          <div class="ship-dates-overlay" data-ship-dates-overlay></div>
+          <button
+            type="button"
+            class="header-utility-bar__link ship-dates-trigger"
+            aria-expanded="false"
+            aria-controls="ship-dates-panel-{{ section.id }}"
+            data-ship-dates-trigger
           >
             {{ block_settings.ship_dates_label | default: 'Ship Dates' }}
-            <span class="svg-wrapper icon-caret">
+            <span class="svg-wrapper icon-caret ship-dates-caret">
               {{- 'icon-caret.svg' | inline_asset_content -}}
             </span>
-          </a>
+          </button>
+          
+          <div 
+            id="ship-dates-panel-{{ section.id }}" 
+            class="ship-dates-panel"
+            aria-hidden="true"
+          >
+            <div class="ship-dates-panel__inner">
+              {%- comment -%} Panel Header {%- endcomment -%}
+              <div class="ship-dates-panel__header">
+                <span class="ship-dates-panel__title">Ship Dates</span>
+                <button type="button" class="ship-dates-panel__close" aria-label="Close ship dates" data-ship-dates-close>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 11L11 1M1 1L11 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              {%- comment -%} Standard Order Section {%- endcomment -%}
+              <div class="ship-dates-section" data-section="standard">
+                <button type="button" class="ship-dates-section__header" aria-expanded="true">
+                  <span class="ship-dates-section__title">Standard Order</span>
+                  <span class="ship-dates-section__toggle">
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="ship-dates-section__content">
+                  <div class="ship-dates-row">
+                    <span class="ship-dates-row__type">Standard</span>
+                    <span class="ship-dates-row__date">DD MM YYYY</span>
+                    <span class="ship-dates-row__weeks">12 Weeks</span>
+                  </div>
+                  <div class="ship-dates-row">
+                    <span class="ship-dates-row__type">Rush</span>
+                    <span class="ship-dates-row__date">DD MM YYYY</span>
+                    <span class="ship-dates-row__weeks">8 Weeks</span>
+                  </div>
+                  <div class="ship-dates-row">
+                    <span class="ship-dates-row__type">Expedited</span>
+                    <span class="ship-dates-row__date">DD MM YYYY</span>
+                    <span class="ship-dates-row__weeks">6 Weeks</span>
+                  </div>
+                </div>
+              </div>
+
+              {%- comment -%} Custom Order Section {%- endcomment -%}
+              <div class="ship-dates-section" data-section="custom">
+                <button type="button" class="ship-dates-section__header" aria-expanded="true">
+                  <span class="ship-dates-section__title">Custom Order</span>
+                  <span class="ship-dates-section__toggle">
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="ship-dates-section__content">
+                  <div class="ship-dates-row">
+                    <span class="ship-dates-row__type">Standard</span>
+                    <span class="ship-dates-row__date">DD MM YYYY</span>
+                    <span class="ship-dates-row__weeks">12 Weeks</span>
+                  </div>
+                  <div class="ship-dates-row">
+                    <span class="ship-dates-row__type">Rush</span>
+                    <span class="ship-dates-row__date">DD MM YYYY</span>
+                    <span class="ship-dates-row__weeks">8 Weeks</span>
+                  </div>
+                  <div class="ship-dates-row">
+                    <span class="ship-dates-row__type">Expedited</span>
+                    <span class="ship-dates-row__date">DD MM YYYY</span>
+                    <span class="ship-dates-row__weeks">6 Weeks</span>
+                  </div>
+                </div>
+              </div>
+
+              {%- comment -%} Shipping Info {%- endcomment -%}
+              <div class="ship-dates-info">
+                <p class="ship-dates-info__title">Shipping Guideline Info: TBD</p>
+                <p class="ship-dates-info__text">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       {% endif %}
 
@@ -306,6 +394,245 @@
     .header-utility-bar__right {
       flex-wrap: wrap;
       gap: var(--padding-xs);
+    }
+  }
+
+  /* Ship Dates Dropdown */
+  .ship-dates-dropdown {
+    position: relative;
+  }
+
+  .ship-dates-trigger {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .ship-dates-trigger:hover {
+    text-decoration: underline;
+  }
+
+  .ship-dates-caret {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ship-dates-dropdown.is-open .ship-dates-caret {
+    transform: rotate(0deg);
+  }
+
+  .ship-dates-panel {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    z-index: 1000;
+    min-width: 340px;
+    background: var(--color-background, #fff);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 8px 48px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.98);
+    transform-origin: top right;
+    pointer-events: none;
+  }
+
+  .ship-dates-dropdown.is-open .ship-dates-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .ship-dates-panel__inner {
+    padding: 0;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .ship-dates-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border, #e5e5e5);
+  }
+
+  .ship-dates-panel__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-foreground, #333);
+  }
+
+  .ship-dates-panel__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--color-foreground, #333);
+    transition: background-color 0.2s ease;
+  }
+
+  .ship-dates-panel__close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  /* Collapsible Sections */
+  .ship-dates-section {
+    border-bottom: 1px solid var(--color-border, #e5e5e5);
+  }
+
+  .ship-dates-section:last-of-type {
+    border-bottom: none;
+  }
+
+  .ship-dates-section__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: background-color 0.2s ease;
+  }
+
+  .ship-dates-section__header:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  .ship-dates-section__title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-foreground, #333);
+  }
+
+  .ship-dates-section__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-foreground, #666);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ship-dates-section.is-collapsed .ship-dates-section__toggle {
+    transform: rotate(-180deg);
+  }
+
+  .ship-dates-section__content {
+    overflow: hidden;
+    max-height: 200px;
+    opacity: 1;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.25s ease,
+                padding 0.3s ease;
+  }
+
+  .ship-dates-section.is-collapsed .ship-dates-section__content {
+    max-height: 0;
+    opacity: 0;
+  }
+
+  /* Ship Date Rows */
+  .ship-dates-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 0.875rem;
+    color: var(--color-foreground, #333);
+  }
+
+  .ship-dates-row:last-child {
+    padding-bottom: 14px;
+  }
+
+  .ship-dates-row__type {
+    color: var(--color-foreground, #333);
+  }
+
+  .ship-dates-row__date {
+    color: #888;
+  }
+
+  .ship-dates-row__weeks {
+    color: #888;
+    text-align: right;
+  }
+
+  /* Shipping Info */
+  .ship-dates-info {
+    padding: 16px 20px 20px;
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  .ship-dates-info__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-foreground, #333);
+    margin: 0 0 8px;
+  }
+
+  .ship-dates-info__text {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+  }
+
+  /* Mobile overlay */
+  .ship-dates-overlay {
+    display: none;
+  }
+
+  /* Mobile adjustments */
+  @media screen and (max-width: 749px) {
+    .ship-dates-overlay {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s;
+      z-index: 999;
+    }
+
+    .ship-dates-dropdown.is-open .ship-dates-overlay {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .ship-dates-panel {
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      min-width: 100%;
+      border-radius: 16px 16px 0 0;
+      max-height: 85vh;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transform-origin: bottom center;
+    }
+
+    .ship-dates-dropdown.is-open .ship-dates-panel {
+      transform: translateY(0);
+    }
+
+    .ship-dates-panel__inner {
+      border-radius: 16px 16px 0 0;
     }
   }
 {% endstylesheet %}

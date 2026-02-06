@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * Custom Component Classes
+ * These use Tailwind's @apply directive for reusable component styles
+ * Remember: all Tailwind utilities use the 'tw-' prefix
+ */
+
+@layer components {
+  /* Card with shadow - for info cards, product cards, etc. */
+  .card-shadow {
+    @apply tw-shadow-card tw-rounded-lg tw-transition-all tw-duration-200;
+  }
+  
+  .card-shadow:hover {
+    @apply tw-shadow-card-hover tw--translate-y-0.5;
+  }
+
+  /* Button styles */
+  .btn-primary {
+    @apply tw-bg-brand-blue tw-text-white tw-px-6 tw-py-3 tw-rounded-lg tw-font-medium tw-transition-all tw-duration-200;
+  }
+  
+  .btn-primary:hover {
+    @apply tw-bg-opacity-90 tw-shadow-md;
+  }
+
+  .btn-secondary {
+    @apply tw-bg-transparent tw-border tw-border-current tw-px-6 tw-py-3 tw-rounded-lg tw-font-medium tw-transition-all tw-duration-200;
+  }
+  
+  .btn-secondary:hover {
+    @apply tw-bg-foreground tw-bg-opacity-5;
+  }
+
+  /* Text link with underline animation */
+  .link-animated {
+    @apply tw-relative tw-inline-block;
+  }
+  
+  .link-animated::after {
+    content: '';
+    @apply tw-absolute tw-bottom-0 tw-left-0 tw-w-0 tw-h-px tw-bg-current tw-transition-all tw-duration-300;
+  }
+  
+  .link-animated:hover::after {
+    @apply tw-w-full;
+  }
+}
+
+@layer utilities {
+  /* Animation utilities for Motion One integration */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .animate-fade-in {
+    opacity: 0;
+  }
+  
+  .animate-slide-up {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  
+  .animate-scale-in {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  /* Stagger children - used with Motion One's stagger */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
