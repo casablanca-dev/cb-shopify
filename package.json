@@ -5,8 +5,8 @@
   "scripts": {
     "build:css": "postcss src/tailwind.css -o assets/tailwind.min.css --env production",
     "watch:css": "postcss src/tailwind.css -o assets/tailwind.min.css --watch",
-    "build:js": "esbuild src/animations.js --bundle --minify --outfile=assets/animations.min.js --format=iife --global-name=CasablancaAnimations",
-    "watch:js": "esbuild src/animations.js --bundle --outfile=assets/animations.min.js --format=iife --global-name=CasablancaAnimations --watch",
+    "build:js": "esbuild src/animations.js --bundle --minify --outfile=assets/animations.min.js --format=iife --global-name=CasablancaAnimations && esbuild assets/shop-dropdown-animations.js --bundle --minify --outfile=assets/shop-dropdown-animations.min.js --format=iife",
+    "watch:js": "concurrently \"esbuild src/animations.js --bundle --outfile=assets/animations.min.js --format=iife --global-name=CasablancaAnimations --watch\" \"esbuild assets/shop-dropdown-animations.js --bundle --outfile=assets/shop-dropdown-animations.min.js --format=iife --watch\"",
     "build": "npm run build:css && npm run build:js",
     "watch": "concurrently \"npm run watch:css\" \"npm run watch:js\"",
     "dev": "concurrently \"npm run watch:css\" \"npm run watch:js\" \"shopify theme dev\""

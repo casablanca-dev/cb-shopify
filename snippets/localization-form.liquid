@@ -359,6 +359,19 @@
     font-weight: var(--menu-top-level-font-weight);
     padding-inline: var(--padding-2xs);
     margin-inline: calc(-1 * var(--padding-2xs));
+    box-shadow: none;
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-foreground);
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color var(--animation-speed) var(--animation-easing);
+  }
+
+  .dropdown-localization__button:hover {
+    box-shadow: none;
+    background-color: #d99e9c;
+    border-color: transparent;
+    color: var(--color-foreground);
   }
 
   .dropdown-localization__button .icon-caret {
@@ -391,14 +404,6 @@
 
   .dropdown-localization__button[aria-expanded='true'] .icon-caret svg {
     transform: rotate(180deg);
-  }
-
-  .dropdown-localization__button,
-  .dropdown-localization__button:hover {
-    box-shadow: none;
-    background-color: transparent;
-    border-color: transparent;
-    color: var(--color-foreground);
   }
 
   .localization-form__list {
