@@ -4059,3 +4059,22 @@ text-component {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08);
   transform: translateY(-2px);
 }
+
+/* Mega menu parent links - bold top-level items, black text */
+.mega-menu__link.mega-menu__link--parent {
+  font-weight: 700 !important;
+  color: var(--color-foreground) !important;
+}
+
+/* Hero banner title - large and bold */
+.hero .text-block h1,
+.hero .text-block p {
+  font-weight: 700;
+}
+
+/* Responsive hero text sizing */
+@media screen and (max-width: 749px) {
+  .hero .text-block {
+    font-size: 0.6em;
+  }
+}
