@@ -246,30 +246,63 @@
     const getUtilityRows = () => document.querySelectorAll('.header__row--utility');
     let ticking = false;
     let lastScrollY = window.scrollY;
+    let accumulatedDelta = 0;
+    let lastDirection = 0; // 1 = down, -1 = up
+    let lastToggleAt = 0;
     const topThreshold = 8;
     const directionTolerance = 2;
+    const toggleDistance = 28;
+    const toggleCooldownMs = 180;
+
+    const setHidden = (hidden) => {
+      getUtilityRows().forEach((row) => {
+        row.classList.toggle('header__row--utility-hidden', hidden);
+      });
+    };
 
     const syncUtilityVisibility = () => {
       const currentScrollY = window.scrollY;
       const delta = currentScrollY - lastScrollY;
-      let shouldHide = false;
+      const currentDirection = delta > directionTolerance ? 1 : delta < -directionTolerance ? -1 : 0;
+      const currentlyHidden = getUtilityRows()[0]?.classList.contains('header__row--utility-hidden') ?? false;
+      const now = performance.now();
 
       // Mirror common ecommerce behavior: hide while scrolling down,
       // reveal when scrolling up or when near the top.
       if (currentScrollY <= topThreshold) {
-        shouldHide = false;
-      } else if (delta > directionTolerance) {
-        shouldHide = true;
-      } else if (delta < -directionTolerance) {
-        shouldHide = false;
-      } else {
-        // Keep existing state if movement is too small.
-        shouldHide = getUtilityRows()[0]?.classList.contains('header__row--utility-hidden') ?? false;
+        setHidden(false);
+        accumulatedDelta = 0;
+        lastDirection = 0;
+        lastScrollY = currentScrollY;
+        return;
       }
 
-      getUtilityRows().forEach((row) => {
-        row.classList.toggle('header__row--utility-hidden', shouldHide);
-      });
+      // Ignore tiny jitter from wheel/trackpad events.
+      if (currentDirection === 0) {
+        lastScrollY = currentScrollY;
+        return;
+      }
+
+      // Reset accumulation when scroll direction changes.
+      if (currentDirection !== lastDirection) {
+        accumulatedDelta = 0;
+        lastDirection = currentDirection;
+      }
+
+      accumulatedDelta += Math.abs(delta);
+
+      // Require intentional movement before toggling to avoid flicker.
+      if (accumulatedDelta >= toggleDistance && now - lastToggleAt >= toggleCooldownMs) {
+        if (currentDirection === 1 && !currentlyHidden) {
+          setHidden(true);
+          accumulatedDelta = 0;
+          lastToggleAt = now;
+        } else if (currentDirection === -1 && currentlyHidden) {
+          setHidden(false);
+          accumulatedDelta = 0;
+          lastToggleAt = now;
+        }
+      }
 
       lastScrollY = currentScrollY;
     };
