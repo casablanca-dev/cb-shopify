@@ -211,7 +211,7 @@
         "collection_list": [
           "casablanca",
           "beloved",
-          "amare",
+          "amare-couture",
           "leblanc"
         ],
         "layout_type": "grid",
@@ -691,7 +691,6 @@
                   "type": "image",
                   "name": "t:names.image",
                   "settings": {
-                    "image": "shopify://shop_images/2b4e16719426500375a7a4c8a2374ff0.jpg",
                     "link": "",
                     "image_ratio": "adapt",
                     "width": "fill",
@@ -801,7 +800,6 @@
                   "type": "image",
                   "name": "t:names.image",
                   "settings": {
-                    "image": "shopify://shop_images/veil2.jpg",
                     "link": "",
                     "image_ratio": "adapt",
                     "width": "fill",
@@ -907,7 +905,6 @@
           "static": true,
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/e890720635672d742e16e35aadb81ce4.jpg",
             "link": "",
             "video_loop": true,
             "video_autoplay": false,
