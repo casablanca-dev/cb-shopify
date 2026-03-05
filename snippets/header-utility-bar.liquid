@@ -238,7 +238,66 @@
   </div>
 </div>
 
+<script>
+  (() => {
+    if (window.__headerUtilityHideOnScrollInit) return;
+    window.__headerUtilityHideOnScrollInit = true;
+
+    const getUtilityRows = () => document.querySelectorAll('.header__row--utility');
+    let ticking = false;
+    let lastScrollY = window.scrollY;
+    const topThreshold = 8;
+    const directionTolerance = 2;
+
+    const syncUtilityVisibility = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY;
+      let shouldHide = false;
+
+      // Mirror common ecommerce behavior: hide while scrolling down,
+      // reveal when scrolling up or when near the top.
+      if (currentScrollY <= topThreshold) {
+        shouldHide = false;
+      } else if (delta > directionTolerance) {
+        shouldHide = true;
+      } else if (delta < -directionTolerance) {
+        shouldHide = false;
+      } else {
+        // Keep existing state if movement is too small.
+        shouldHide = getUtilityRows()[0]?.classList.contains('header__row--utility-hidden') ?? false;
+      }
+
+      getUtilityRows().forEach((row) => {
+        row.classList.toggle('header__row--utility-hidden', shouldHide);
+      });
+
+      lastScrollY = currentScrollY;
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        syncUtilityVisibility();
+        ticking = false;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('load', syncUtilityVisibility);
+    syncUtilityVisibility();
+  })();
+</script>
+
 {% stylesheet %}
+  .header__row--utility {
+    transition: none !important;
+  }
+
+  .header__row--utility.header__row--utility-hidden {
+    display: none;
+  }
+
   .header-utility-bar {
     border-bottom: var(--style-border-width) solid var(--color-border);
     background-color: var(--color-background);
